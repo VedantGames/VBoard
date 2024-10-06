@@ -57,7 +57,7 @@ function CanvasBoard() {
     const canvas = canvasRef.current;
 
     axios
-      .post("http://localhost:8000/calculate", {
+      .post("https://vboard-server.vercel.app/calculate", {
         image: canvas.toDataURL('image/png')
       })
       .then(res => { setResult([...JSON.parse(res.data.replace(/'/g, '"'))]); clear() })
