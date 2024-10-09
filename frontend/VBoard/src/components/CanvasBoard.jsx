@@ -28,10 +28,13 @@ function CanvasBoard() {
     if (canvasData.length !== currentIdx+1) {
       setCanvasData(canvasData.filter((_, i) => i <= currentIdx))
     }
-
+    
+    ctx.strokeStyle = board.selectedColor;
     ctx.beginPath();
     ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
     setIsDrawing(true);
+
+    draw(e);
   }
   
   const stopDrawing = () => {
@@ -51,8 +54,8 @@ function CanvasBoard() {
     const ctx = canvas.getContext('2d');
     
     
-    ctx.strokeStyle = board.selectedColor;
-    ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    ctx.lineTo(e.nativeEvent.offsetX || e.nativeEvent.changedTouches[0].clientX, e.nativeEvent.offsetY || e.nativeEvent.changedTouches[0].clientY-e.target.parentElement.previousSibling.clientHeight);
+    // console.log(e);
     ctx.stroke();
   }
 
@@ -117,24 +120,31 @@ function CanvasBoard() {
   const constraintsRef = useRef(null)
 
   return (
-    <div className='overflow-hidden'>
-      <div className='absolute flex-wrap top-0 left-0 px-2 pt-2 flex justify-between items-center w-full text-white z-50'>
-        <button className='bg-[#ef4444] px-5 py-2 rounded-lg' onClick={reset}>Reset</button>
-        <div className='flex flex-wrap justify-between items-center gap-3'>
+    <div className='overflow-hidden h-full'>
+      <div className='flex-wrap top-0 left-0 px-2 pt-2 flex justify-between items-center h-auto w-full text-white z-50'>
+        <button className='bg-[#ef4444] px-5 py-2 md:mb-0 mb-1 rounded-lg' onClick={reset}>Reset</button>
+        <div className='flex flex-wrap justify-between items-center md:mb-0 mb-1 gap-5'>
           {board.colors.map(color => (
             <div 
               key={color} 
               className={'size-8 rounded-full shadow-sm shadow-neutral-600 outline-slate-300 ' + (board.selectedColor === color ? 'outline' : '')}
               style={{backgroundColor: color}}
-              onClick={() => board.setSelectedColor(color)}
+              onClick={() => {
+                board.setSelectedColor(color);
+
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+
+                ctx.globalCompositeOperation = 'source-over'; }}
             ></div>
           ))}
         </div>
-        <button className='bg-[#2e394e] ml-2 px-5 py-2 rounded-lg' onClick={() => {
+        <button className='bg-[#2e394e] ml-2 px-5 py-2 md:mb-0 mb-1 rounded-lg' onClick={() => {
           const canvas = canvasRef.current;
           const ctx = canvas.getContext('2d');
 
           ctx.globalCompositeOperation = 'destination-out';
+          board.setSelectedColor('0')
         }}>Eraser</button>
         <div className='flex items-center gap-2 bg-slate-800 px-5 py-2 ml-8 rounded-lg'>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -162,7 +172,7 @@ function CanvasBoard() {
           onClick={run}
         >Calculate</button>
       </div>
-      <motion.div ref={constraintsRef} className='absolute top-0 left-0 pt-20 text-white text-lg w-full h-full z-10'>
+      <motion.div ref={constraintsRef} className='top-0 left-0 text-white text-lg w-full h-full z-10'>
         {result.length > 0 && result.map((equation, i) => (
           <motion.div 
             key={i}
@@ -175,14 +185,14 @@ function CanvasBoard() {
           ref={canvasRef}
           width={window.outerWidth} 
           height={window.innerHeight-36}
-          className='absolute bottom-0 -z-10'
-          onMouseDown={startDrawing}
+          className='bottom-0 -z-10'
           onTouchStart={startDrawing}
+          onMouseDown={startDrawing}
+          onTouchMove={draw}
           onMouseUp={stopDrawing}
-          onTouchEnd={startDrawing}
+          onTouchEnd={stopDrawing}
           // onMouseOut={stopDrawing}
           onMouseMove={draw}
-          onTouchMove={draw}
           >
         </canvas>
       </motion.div>
