@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
 app.use(express.json())
 app.use(cors({
   Credential: true,
-  origin: ['https://vboard-vedant.vercel.app']
+  origin: ['https://vboard-vedant.vercel.app', 'http://localhost:5173']
 }))
 
 const aikey = 'AIzaSyAmXy-wm05vDWB2hTsEAMNp2x7v6wm_rik';

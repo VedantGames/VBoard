@@ -3,9 +3,10 @@ import React, { createContext, useState } from 'react'
 export const Board = createContext(null);
 
 function BoardContext({children}) {
-  const [selectedColor, setSelectedColor] = useState('#ff0000');
+  const [size, setSize] = useState(3);
+  const [selectedColor, setSelectedColor] = useState('#ffffff');
   const colors = [
-      "#000000",  // black
+    "#000000",  // black
     "#ffffff",  // white
     "#ee3333",  // red
     "#e64980",  // pink
@@ -20,7 +21,7 @@ function BoardContext({children}) {
   ]
 
   return (
-    <Board.Provider value={{selectedColor, setSelectedColor, colors}}>
+    <Board.Provider value={{size, setSize, selectedColor, setSelectedColor, colors}}>
       {children}
     </Board.Provider>
   )
