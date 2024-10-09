@@ -118,9 +118,9 @@ function CanvasBoard() {
 
   return (
     <div className='overflow-hidden'>
-      <div className='absolute top-0 left-0 px-2 pt-2 flex justify-between items-center w-full text-white z-50'>
+      <div className='absolute flex-wrap top-0 left-0 px-2 pt-2 flex justify-between items-center w-full text-white z-50'>
         <button className='bg-[#ef4444] px-5 py-2 rounded-lg' onClick={reset}>Reset</button>
-        <div className='flex items-center gap-3'>
+        <div className='flex flex-wrap justify-between items-center gap-3'>
           {board.colors.map(color => (
             <div 
               key={color} 
@@ -129,21 +129,21 @@ function CanvasBoard() {
               onClick={() => board.setSelectedColor(color)}
             ></div>
           ))}
-          <button className='bg-[#2e394e] ml-2 px-5 py-2 rounded-lg' onClick={() => {
-            const canvas = canvasRef.current;
-            const ctx = canvas.getContext('2d');
+        </div>
+        <button className='bg-[#2e394e] ml-2 px-5 py-2 rounded-lg' onClick={() => {
+          const canvas = canvasRef.current;
+          const ctx = canvas.getContext('2d');
 
-            ctx.globalCompositeOperation = 'destination-out';
-          }}>Eraser</button>
-          <div className='flex items-center gap-2 bg-slate-800 px-5 py-2 ml-8 rounded-lg'>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-            </svg>
-            <input type="range" name="size" id="size" min={0} max={20} value={board.size} onChange={changeSize} />
-            <h1 className='w-10 text-right'>
-              {board.size}px
-            </h1>
-          </div>
+          ctx.globalCompositeOperation = 'destination-out';
+        }}>Eraser</button>
+        <div className='flex items-center gap-2 bg-slate-800 px-5 py-2 ml-8 rounded-lg'>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+          </svg>
+          <input type="range" name="size" id="size" min={0} max={20} value={board.size} onChange={changeSize} />
+          <h1 className='w-10 text-right'>
+            {board.size}px
+          </h1>
         </div>
         <div className='flex gap-2'>
           <button>
