@@ -16,7 +16,7 @@ app.use(cors({
   origin: ['https://vboard-vedant.vercel.app', 'http://localhost:5173']
 }))
 
-const aiKey = "AIzaSyBG6zjR6SAc2UfODa_8BIMvKmrfk8QT7hc";
+const aikey = 'AIzaSyBG6zjR6SAc2UfODa_8BIMvKmrfk8QT7hc';
 
 const genAI = new GoogleGenerativeAI(aikey);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
